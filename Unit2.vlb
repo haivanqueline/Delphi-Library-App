@@ -1,0 +1,20 @@
+﻿[]
+Coordinates=0,116,91,36
+Visible=True
+LayerNames=NewLayer0
+
+[Module Settings]
+ModelLayerNames=NewLayer0
+ActiveLayerNames=NewLayer0
+EditingLayerName=NewLayer0
+
+[lblHoTen]
+Coordinates=0,0,66,58
+Visible=True
+
+[(TMenuItem)]
+Coordinates=107,152,88,36
+
+[pnlHeader]
+Coordinates=85,1,74,58
+
