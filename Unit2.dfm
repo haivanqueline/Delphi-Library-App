@@ -81,7 +81,7 @@ object frmMain: TfrmMain
     Top = 41
     Width = 1040
     Height = 564
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -245,6 +245,8 @@ object frmMain: TfrmMain
           item
             AutoSize = True
             Caption = 'T'#234'n t'#224'i li'#7879'u'
+            WidthType = (
+              -32)
           end
           item
             Caption = 'Ng'#224'y y'#234'u c'#7847'u'
@@ -289,7 +291,6 @@ object frmMain: TfrmMain
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 1026
         object lblLichSu_NhanTrangThai: TLabel
           Left = 0
           Top = 0
@@ -442,26 +443,6 @@ object frmMain: TfrmMain
     object TabSheet4: TTabSheet
       Caption = 'T'#224'i li'#7879'u qu'#225' h'#7841'n'
       ImageIndex = 4
-      object pnlThanhToan_Button: TPanel
-        Left = 0
-        Top = 471
-        Width = 1032
-        Height = 50
-        Align = alBottom
-        BevelOuter = bvNone
-        TabOrder = 0
-        object btnThanhToan_QuaHan: TButton
-          Left = 905
-          Top = 0
-          Width = 127
-          Height = 50
-          Margins.Left = 10
-          Align = alRight
-          Caption = 'Thanh to'#225'n'
-          TabOrder = 0
-          OnClick = btnThanhToan_QuaHanClick
-        end
-      end
       object lstvQuaHan_DanhSach: TListView
         Left = 0
         Top = 0
@@ -506,8 +487,31 @@ object frmMain: TfrmMain
         ReadOnly = True
         RowSelect = True
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 0
         ViewStyle = vsReport
+      end
+      object pnlThanhToan_Button: TPanel
+        Left = 0
+        Top = 471
+        Width = 1032
+        Height = 50
+        Align = alBottom
+        BevelOuter = bvNone
+        TabOrder = 1
+        ExplicitTop = 454
+        ExplicitWidth = 1026
+        object btnThanhToan_QuaHan: TButton
+          Left = 905
+          Top = 0
+          Width = 127
+          Height = 50
+          Margins.Left = 10
+          Align = alRight
+          Caption = 'Thanh to'#225'n'
+          TabOrder = 0
+          OnClick = btnThanhToan_QuaHanClick
+          ExplicitLeft = 899
+        end
       end
     end
   end

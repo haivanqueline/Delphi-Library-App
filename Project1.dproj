@@ -148,6 +148,7 @@
             <Form>frmNhapGiaHan</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uPasswordUtils.pas"/>
         <None Include="ModelSupport_Project1\default.txaPackage"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

@@ -35,14 +35,14 @@ type
     mnuDangMuon_TraTaiLieu: TMenuItem;
     mnuDangMuon_GiaHanTaiLieu: TMenuItem;
     lstvTra_LichSuMuonTra: TListView;
-    pnlThanhToan_Button: TPanel;
-    btnThanhToan_QuaHan: TButton;
     lstvQuaHan_DanhSach: TListView;
     pnlLichSu_BoLoc: TPanel;
     lblLichSu_NhanTrangThai: TLabel;
     cboLichSu_TrangThai: TComboBox;
     btnLichSu_Loc: TButton;
     lstvDangMuon_DanhSach: TListView;
+    pnlThanhToan_Button: TPanel;
+    btnThanhToan_QuaHan: TButton;
     procedure btnDangXuatClick(Sender: TObject);
     procedure btnThoatClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);

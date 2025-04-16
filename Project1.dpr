@@ -7,7 +7,8 @@ uses
   Unit3 in 'Unit3.pas' {frmDoiMatKhau},
   Unit4 in 'Unit4.pas' {DM_DuLieu: TDataModule},
   Unit5 in 'Unit5.pas' {frmNhapYeuCauMuon},
-  Unit6 in 'Unit6.pas' {frmNhapGiaHan};
+  Unit6 in 'Unit6.pas' {frmNhapGiaHan},
+  uPasswordUtils in 'uPasswordUtils.pas';
 
 {$R *.res}
 

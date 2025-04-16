@@ -38,13 +38,15 @@ implementation
 
 {$R *.dfm}
 
-uses Unit2, Unit3;
+uses Unit2, Unit3, uPasswordUtils, System.NetEncoding;
 
 procedure TfrmLogin.btnDangNhapClick(Sender: TObject);
 var
-  MSSV,HoTenSinhVien, NgaySinh, MatKhauNhap,MatKhauDB: string;
+  MSSV, HoTenSinhVien, NgaySinh, MatKhauNhap, MatKhauDB: string;
+  Salt: TBytes;
   SQL: string;
   QueryLogin: TFDQuery;
+  IsDefaultPassword: Boolean;
 begin
   MSSV := edtMaSV.Text;
   NgaySinh := edtNgaySinh.Text;
@@ -58,13 +60,19 @@ begin
   end;
 
   FormatSettings.ShortDateFormat := 'dd/mm/yyyy';
-  NgaySinh := FormatDateTime('dd/mm/yyyy', StrToDate(NgaySinh));
+  try
+    NgaySinh := FormatDateTime('dd/mm/yyyy', StrToDate(NgaySinh));
+  except
+    ShowMessage('Ngày sinh không hợp lệ. Vui lòng nhập theo định dạng dd/mm/yyyy.');
+    edtNgaySinh.SetFocus;
+    Exit;
+  end;
 
   // Tạo và thực thi Query để kiểm tra đăng nhập
   QueryLogin := TFDQuery.Create(nil);
   try
     QueryLogin.Connection := DM_DuLieu.FDConnection;
-    SQL := 'SELECT MSSV, HoLot, Ten, MatKhau FROM SinhVien WHERE MSSV = :MSSV AND NgaySinh = :NgaySinh';
+    SQL := 'SELECT MSSV, HoLot, Ten, MatKhau, Salt FROM SinhVien WHERE MSSV = :MSSV AND NgaySinh = :NgaySinh';
     QueryLogin.SQL.Text := SQL;
     QueryLogin.Params.ParamByName('MSSV').AsString := MSSV;
     QueryLogin.Params.ParamByName('NgaySinh').AsString := NgaySinh;
@@ -75,7 +83,9 @@ begin
     begin
       MatKhauDB := QueryLogin.FieldByName('MatKhau').AsString; // Lấy mật khẩu từ database
       HoTenSinhVien := QueryLogin.FieldByName('HoLot').AsString + ' ' + QueryLogin.FieldByName('Ten').AsString;
-      if MatKhauDB = 'DHTN@123' then // **TRƯỜNG HỢP 1: Mật khẩu mặc định**
+      IsDefaultPassword := (MatKhauDB = 'DHTN@123') and QueryLogin.FieldByName('Salt').IsNull;
+
+      if IsDefaultPassword then // **TRƯỜNG HỢP 1: Mật khẩu mặc định**
       begin
         if MatKhauNhap = 'DHTN@123' then // **KIỂM TRA MẬT KHẨU NHẬP VÀO CÓ PHẢI MẬT KHẨU MẶC ĐỊNH KHÔNG**
         begin
@@ -87,21 +97,36 @@ begin
             begin
               ShowMessage('Đổi mật khẩu thành công. Chào mừng bạn!');
               Self.Hide;
+              frmMain.HoTenNguoiDung := HoTenSinhVien;
+              frmMain.MSSV_DangNhap := MSSV;
               frmMain.Show;
-            end else
+            end
+            else
             begin
               ShowMessage('Bạn cần nhập mật khẩu mới để tiếp tục sử dụng ứng dụng.');
             end;
           end;
-        end else // Nhập sai mật khẩu mặc định
+        end
+        else // Nhập sai mật khẩu mặc định
         begin
-          ShowMessage('Mật khẩu mặc định không chính xác.'); // Thông báo rõ ràng là sai mật khẩu mặc định
+          ShowMessage('Mật khẩu mặc định không chính xác.');
           edtMatKhau.Clear;
           edtMatKhau.SetFocus;
         end;
-      end else // **TRƯỜNG HỢP 2: Mật khẩu đã đổi (không phải mặc định)**
+      end
+      else // **TRƯỜNG HỢP 2: Mật khẩu đã đổi (băm bằng PBKDF2)**
       begin
-        if MatKhauDB = MatKhauNhap then // Kiểm tra mật khẩu nhập vào so với mật khẩu đã đổi trong database
+        if QueryLogin.FieldByName('Salt').IsNull then
+        begin
+          ShowMessage('Tài khoản chưa được cập nhật bảo mật mới. Vui lòng đổi mật khẩu.');
+          Exit;
+        end;
+
+        // Lấy salt từ cơ sở dữ liệu
+        Salt := TNetEncoding.Base64.DecodeStringToBytes(QueryLogin.FieldByName('Salt').AsString);
+
+        // Xác minh mật khẩu bằng PBKDF2
+        if TPasswordUtils.VerifyPassword(MatKhauNhap, MatKhauDB, Salt) then
         begin
           // Đăng nhập thành công với mật khẩu đã đổi
           ShowMessage('Đăng nhập thành công. Chào mừng bạn!');
@@ -109,14 +134,16 @@ begin
           frmMain.HoTenNguoiDung := HoTenSinhVien;
           frmMain.MSSV_DangNhap := MSSV;
           frmMain.Show;
-        end else // Nhập sai mật khẩu đã đổi
+        end
+        else // Nhập sai mật khẩu đã đổi
         begin
-          ShowMessage('Mật khẩu không chính xác.'); // Thông báo sai mật khẩu (không phải mặc định)
+          ShowMessage('Mật khẩu không chính xác.');
           edtMatKhau.Clear;
           edtMatKhau.SetFocus;
         end;
       end;
-    end else // Không tìm thấy sinh viên
+    end
+    else // Không tìm thấy sinh viên
     begin
       ShowMessage('Mã số sinh viên hoặc ngày sinh không đúng.');
       edtMaSV.Clear;
@@ -127,6 +154,7 @@ begin
     QueryLogin.Free;
   end;
 end;
+
 procedure TfrmLogin.btnThoatClick(Sender: TObject);
 begin
   Application.Terminate;

@@ -8,9 +8,7 @@ uses
     FireDAC.Comp.Client,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
-  FireDAC.Phys,
-  System.Hash,
-  System.NetEncoding;
+  FireDAC.Phys;
 
 type
   TfrmDoiMatKhau = class(TForm)
@@ -38,15 +36,17 @@ implementation
 
 {$R *.dfm}
 
+uses uPasswordUtils, System.NetEncoding;
+
 procedure TfrmDoiMatKhau.btnDoiMatKhauClick(Sender: TObject);
 var
   MatKhauMoi, XacNhanMatKhauMoi, MatKhauHash: string;
+  Salt: TBytes;
   SQL: string;
   QueryDoiMatKhau: TFDQuery;
-  HashBytes: TBytes; // Biến để lưu hash dạng byte
 begin
-  MatKhauMoi := edtMatKhauMoi.Text;
-  XacNhanMatKhauMoi := edtXacNhanMatKhauMoi.Text;
+  MatKhauMoi := Trim(edtMatKhauMoi.Text);
+  XacNhanMatKhauMoi := Trim(edtXacNhanMatKhauMoi.Text);
 
   // Kiểm tra mật khẩu mới và xác nhận mật khẩu
   if MatKhauMoi = '' then
@@ -62,20 +62,25 @@ begin
     edtXacNhanMatKhauMoi.SetFocus;
     Exit;
   end;
+  if Length(MatKhauMoi) < 6 then
+  begin
+    ShowMessage('Mật khẩu mới phải có ít nhất 6 ký tự.');
+    edtMatKhauMoi.SetFocus;
+    Exit;
+  end;
 
-  // **Hash mật khẩu mới bằng SHA-256**
+  // Băm mật khẩu mới bằng PBKDF2
+  MatKhauHash := TPasswordUtils.GenerateHashedPassword(MatKhauMoi, Salt);
 
-
-  // Cập nhật mật khẩu trong CSDL
+  // Cập nhật mật khẩu và salt trong CSDL
   QueryDoiMatKhau := TFDQuery.Create(nil);
   try
     QueryDoiMatKhau.Connection := DM_DuLieu.FDConnection;
-    SQL := 'UPDATE SinhVien SET MatKhau = :MatKhauMoi WHERE MSSV = :MSSV';
-    //SQL := 'UPDATE SinhVien SET MatKhau = :MatKhauMoiHash WHERE MSSV = :MSSV';
+    SQL := 'UPDATE SinhVien SET MatKhau = :MatKhauMoi, Salt = :Salt WHERE MSSV = :MSSV';
     QueryDoiMatKhau.SQL.Text := SQL;
-    QueryDoiMatKhau.Params.ParamByName('MatKhauMoi').AsString := MatKhauMoi;
-    //QueryDoiMatKhau.Params.ParamByName('MatKhauMoiHash').AsString := MatKhauHash;
-    QueryDoiMatKhau.Params.ParamByName('MSSV').AsString := FMSSV_DangNhap; // Sử dụng MSSV đã được truyền từ form login
+    QueryDoiMatKhau.Params.ParamByName('MatKhauMoi').AsString := MatKhauHash;
+    QueryDoiMatKhau.Params.ParamByName('Salt').AsString := TNetEncoding.Base64.EncodeBytesToString(Salt);
+    QueryDoiMatKhau.Params.ParamByName('MSSV').AsString := FMSSV_DangNhap;
 
     QueryDoiMatKhau.ExecSQL; // Thực thi câu lệnh UPDATE
 
