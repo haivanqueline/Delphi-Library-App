@@ -1,92 +1,57 @@
-object frmMain: TfrmMain
+object frmThongBao: TfrmThongBao
   Left = 0
   Top = 0
-  Caption = 'Qu'#7843'n L'#253' M'#432#7907'n Tr'#7843' T'#224'i Li'#7879'u'
-  ClientHeight = 640
-  ClientWidth = 1080
+  BorderStyle = bsDialog
+  Caption = 'Th'#244'ng B'#225'o M'#7899'i'
+  ClientHeight = 400
+  ClientWidth = 764
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'Segoe UI'
+  Font.Name = 'Arial'
   Font.Style = []
-  Icon.Data = {
-    0000010001001010000001002000680400001600000028000000100000002000
-    0000010020000000000000040000C30E0000C30E000000000000000000000000
-    0000000000000000000000000000B073362AB59762919B9C6DD49E9A69F39E98
-    67F39B9D6DD3B6956091A973362A000000000000000000000000000000000000
-    000000000000916D2407B0925E929D9F71FC86A276FF849F73FF6EAE89FF8398
-    69FF7FA67FFF919665FF9E9D6DFBB1936091AA7F2A0600000000000000000000
-    0000AA7F2A06A99664BA979E6FFF809565FF808D56FFA16E21FFAC620FFFAB63
-    10FF9C7329FF779665FF70AB88FF979866FFAB9865BAAA7F2A06000000000000
-    0000B1915D91989A68FF769A6EFFA16D21FFAC630FFF957837FF818A56FF7B96
-    69FF997D3DFFAD630FFF9D7127FF779C6FFF999765FFB1935E9100000000B379
-    392CA09F70FDAE6B1DFFA57127FFD9C2A5FFE0D0B9FFA7B494FF79B196FF87A7
-    83FFA0BCA1FFDFCEB6FFD8BE9EFFA57128FFB06C20FF9E9D6FFCB073302AB690
-    5791A08548FFAC630FFFAD630FFFB4762DFFDBC9AFFFDFCEB7FFDFCFB8FFDFCF
-    B9FFE0CFBAFFDCC9AEFFB5772FFFAC630FFFAC630FFFA0894DFFBA955D91B67F
-    3DD4AC6210FF808955FF6F966DFF878348FF75956CFF907E40FF86834BFF818A
-    56FF8D7E3FFF72956CFF799060FF85854FFF818A55FFAC6310FFB77E3CD3B67B
-    36F4AC630FFF97742EFF937632FF9B7028FF958043FF9A7836FF90834BFF9184
-    4BFF9D7431FF958F5CFF917837FF887F46FF97732EFFAC630FFFB67B36F3B67B
-    37F4AC630FFFAC630FFFAC630FFFAC630FFFB97E38FFE8E2D3FFE9E1D4FFE5DC
-    CAFFE5DECCFFC2925BFFB9864AFFAF6A1AFFAC630FFFAC630FFFB67B36F3B77E
-    3CD3AC630FFFAC630FFFAC630FFFAC630FFFB4752BFFF0EADFFFF5F1EBFFF2EC
-    E3FFEEE9DEFFB97E39FFAE6817FFBB894EFFAD6410FFAC630FFFB7803DD3BD8C
-    5291AC630FFFAC630FFFAC630FFFAC630FFFAC630FFFB9803DFFB6A57BFFB4B2
-    8CFFB8803DFFAC630FFFB27229FFB78140FFAC630EFFAC6310FFBD905691B37F
-    392CB57831FDAC630FFFAC630FFFAC630FFFAC630FFFAC630FFF46C1ABFF27E0
-    DFFFAC630FFFAF6A1BFFBB8648FFAC630FFFAC630FFFB47830FCB079302A0000
-    0000B9894E92AF6919FFAC630FFFAC630FFFAC630FFFAC630FFF7C915BFF7299
-    68FFAC630FFFB7803EFFB06B1DFFAC630FFFAF6919FFBA894E92000000000000
-    0000B66D2407B9874BBAAF6919FFAC630FFFAC630FFFAC630FFF7B915BFFAC62
-    10FFAC630FFFBA8646FFAC630FFFAF6A19FFBA874ABA916D2407000000000000
-    000000000000B66D2407B7894E93B57831FDAF6C1DFFB7803DFFB58341FFB780
-    3DFFB7803DFFBB894BFFB47832FDB9884E92AA7F2A0600000000000000000000
-    0000000000000000000000000000B37F392CBC905691B88444D3B77F3DF4B780
-    3DF4B98445D4BD915B91B379392C00000000000000000000000000000000F00F
-    0000C00300008001000080010000000000000000000000000000000000000000
-    00000000000000000000000000008001000080010000C0030000F00F0000}
   Position = poScreenCenter
-  WindowState = wsMaximized
-  OnActivate = FormActivate
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
-  TextHeight = 17
+  TextHeight = 16
   object pnlHeader: TPanel
     Left = 0
     Top = 0
-    Width = 1080
-    Height = 57
+    Width = 764
+    Height = 60
     Align = alTop
     BevelOuter = bvNone
-    Color = clGradientActiveCaption
-    ParentBackground = False
+    Color = clLinen
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -16
+    Font.Name = 'Arial'
+    Font.Style = [fsBold]
+    ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 1074
-    object lblHoTen: TLabel
-      Left = 65
+    ExplicitWidth = 758
+    object lblTitle: TLabel
+      Left = 0
       Top = 0
-      Width = 203
-      Height = 57
-      Align = alLeft
-      Caption = '[H'#7885' T'#234'n Ng'#432#7901'i D'#249'ng]'
+      Width = 764
+      Height = 60
+      Align = alClient
+      Alignment = taCenter
+      Caption = 'TH'#212'NG B'#193'O M'#7898'I T'#7914' H'#7878' TH'#7888'NG'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
-      Font.Height = -20
-      Font.Name = 'Segoe UI'
+      Font.Height = -19
+      Font.Name = 'Arial'
       Font.Style = [fsBold]
       ParentFont = False
       Layout = tlCenter
-      ExplicitHeight = 28
+      ExplicitWidth = 298
+      ExplicitHeight = 22
     end
-    object imgAvatar: TImage
-      Left = 0
-      Top = 0
-      Width = 65
-      Height = 57
-      Align = alLeft
-      Center = True
+    object imgLogo: TImage
+      Left = 10
+      Top = 10
+      Width = 40
+      Height = 40
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000880000
         008808060000003CBAA352000000017352474200AECE1CE90000000467414D41
@@ -1169,589 +1134,70 @@ object frmMain: TfrmMain
         6082}
       Stretch = True
     end
-    object btnDangXuat: TBitBtn
-      Left = 920
-      Top = 0
-      Width = 100
-      Height = 57
-      Align = alRight
-      Caption = #272#259'ng Xu'#7845't'
+  end
+  object memoThongBao: TMemo
+    Left = 0
+    Top = 60
+    Width = 764
+    Height = 290
+    Align = alClient
+    BevelInner = bvNone
+    BevelOuter = bvNone
+    Color = 15792383
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Arial'
+    Font.Style = []
+    Lines.Strings = (
+      'memoThongBao')
+    ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 1
+    ExplicitWidth = 758
+    ExplicitHeight = 273
+  end
+  object pnlFooter: TPanel
+    Left = 0
+    Top = 350
+    Width = 764
+    Height = 50
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = clLinen
+    TabOrder = 2
+    ExplicitTop = 333
+    ExplicitWidth = 758
+    object btnDaDoc: TButton
+      Left = 200
+      Top = 10
+      Width = 160
+      Height = 30
+      Caption = #272#225'nh d'#7845'u '#273#227' '#273#7885'c'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = 'Arial'
       Font.Style = [fsBold]
-      Kind = bkNo
-      NumGlyphs = 2
-      ParentFont = False
-      TabOrder = 3
-      OnClick = btnDangXuatClick
-      OnMouseEnter = btnDangXuatMouseEnter
-      OnMouseLeave = btnDangXuatMouseLeave
-      ExplicitLeft = 914
-    end
-    object btnDoiMatKhau_Header: TBitBtn
-      Left = 806
-      Top = 0
-      Width = 114
-      Height = 57
-      Align = alRight
-      Caption = #272#7893'i M'#7853't Kh'#7849'u'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      Kind = bkRetry
-      NumGlyphs = 2
-      ParentFont = False
-      TabOrder = 1
-      OnClick = btnDoiMatKhau_HeaderClick
-      OnMouseEnter = btnDoiMatKhau_HeaderMouseEnter
-      OnMouseLeave = btnDoiMatKhau_HeaderMouseLeave
-      ExplicitLeft = 800
-    end
-    object btnThoat: TBitBtn
-      Left = 1020
-      Top = 0
-      Width = 60
-      Height = 57
-      Align = alRight
-      Caption = 'Tho'#225't'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ModalResult = 2
-      NumGlyphs = 2
-      ParentFont = False
-      TabOrder = 2
-      OnClick = btnThoatClick
-      OnMouseEnter = btnThoatMouseEnter
-      OnMouseLeave = btnThoatMouseLeave
-      ExplicitLeft = 1014
-    end
-    object btnThongBao: TBitBtn
-      Left = 706
-      Top = 0
-      Width = 100
-      Height = 57
-      Align = alRight
-      Caption = 'Th'#244'ng B'#225'o'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      Kind = bkHelp
-      NumGlyphs = 2
       ParentFont = False
       TabOrder = 0
-      OnClick = btnThongBaoClick
-      ExplicitLeft = 700
+      OnClick = btnDaDocClick
     end
-  end
-  object PageControl1: TPageControl
-    Left = 0
-    Top = 57
-    Width = 1080
-    Height = 583
-    ActivePage = TabSheet4
-    Align = alClient
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clNavy
-    Font.Height = -15
-    Font.Name = 'Segoe UI'
-    Font.Style = [fsBold]
-    ParentFont = False
-    Style = tsFlatButtons
-    TabOrder = 1
-    OnChange = PageControl1Change
-    ExplicitWidth = 1074
-    ExplicitHeight = 566
-    object TabSheet1: TTabSheet
-      Caption = 'Tra C'#7913'u T'#224'i Li'#7879'u'
-      object pnlTraCuu_TimKiem: TPanel
-        Left = 0
-        Top = 0
-        Width = 1072
-        Height = 33
-        Align = alTop
-        BevelOuter = bvNone
-        Color = clInfoBk
-        ParentBackground = False
-        TabOrder = 0
-        ExplicitWidth = 1066
-        object lblTraCuu_NhanTimKiem: TLabel
-          Left = 0
-          Top = 0
-          Width = 132
-          Height = 33
-          Align = alLeft
-          Caption = 'T'#236'm ki'#7871'm t'#224'i li'#7879'u:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clNavy
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-          Layout = tlCenter
-          ExplicitHeight = 21
-        end
-        object edtTraCuu_TuKhoa: TEdit
-          Left = 132
-          Top = 0
-          Width = 771
-          Height = 33
-          Align = alLeft
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          Color = clWhite
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 0
-          TextHint = 'Nh'#7853'p t'#7915' kh'#243'a (t'#234'n t'#224'i li'#7879'u, t'#225'c gi'#7843', m'#227' t'#224'i li'#7879'u,...)'
-          ExplicitHeight = 29
-        end
-        object btnTraCuu_TimKiem: TBitBtn
-          Left = 903
-          Top = 0
-          Width = 100
-          Height = 33
-          Align = alLeft
-          Caption = 'T'#236'm Ki'#7871'm'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          Kind = bkRetry
-          NumGlyphs = 2
-          ParentFont = False
-          TabOrder = 1
-          OnClick = btnTraCuu_TimKiemClick
-          OnMouseEnter = btnTraCuu_TimKiemMouseEnter
-          OnMouseLeave = btnTraCuu_TimKiemMouseLeave
-        end
-      end
-      object lstvTraCuu_DanhSachTaiLieu: TListView
-        Left = 0
-        Top = 33
-        Width = 1072
-        Height = 512
-        Align = alClient
-        BevelKind = bkSoft
-        Columns = <
-          item
-            Caption = 'TT'
-            Width = 40
-          end
-          item
-            Caption = 'M'#227' T'#224'i Li'#7879'u'
-            Width = 100
-          end
-          item
-            Caption = 'T'#234'n T'#224'i Li'#7879'u'
-            Width = 350
-          end
-          item
-            Caption = 'T'#225'c Gi'#7843
-            Width = 150
-          end
-          item
-            Caption = 'Nh'#224' XB'
-            Width = 120
-          end
-          item
-            Caption = 'N'#259'm XB'
-            Width = 80
-          end
-          item
-            Caption = 'Lo'#7841'i T'#224'i Li'#7879'u'
-            Width = 120
-          end
-          item
-            Caption = 'Khoa'
-            Width = 80
-          end
-          item
-            Caption = 'Ng'#224'nh'
-            Width = 100
-          end
-          item
-            Caption = 'M'#244' T'#7843
-            Width = 200
-          end
-          item
-            Caption = 'S'#7889' L'#432#7907'ng'
-            Width = 80
-          end
-          item
-            Caption = 'S'#7889' L'#432#7907'ng C'#242'n'
-            Width = 100
-          end>
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        GridLines = True
-        MultiSelect = True
-        ReadOnly = True
-        RowSelect = True
-        ParentFont = False
-        PopupMenu = PopupMenu1
-        TabOrder = 1
-        ViewStyle = vsReport
-        OnCustomDrawItem = lstvTraCuu_DanhSachTaiLieuCustomDrawItem
-      end
+    object btnDong: TButton
+      Left = 400
+      Top = 10
+      Width = 160
+      Height = 30
+      Caption = #272#243'ng'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+      OnClick = btnDongClick
     end
-    object TabSheet3: TTabSheet
-      Caption = 'L'#7883'ch S'#7917' M'#432#7907'n Tr'#7843
-      ImageIndex = 1
-      object lstvTra_LichSuMuonTra: TListView
-        Left = 0
-        Top = 27
-        Width = 1072
-        Height = 518
-        Align = alClient
-        BevelKind = bkSoft
-        Columns = <
-          item
-            Caption = 'TT'
-            Width = 40
-          end
-          item
-            Caption = 'M'#227' Y'#234'u C'#7847'u'
-            Width = 100
-          end
-          item
-            Caption = 'M'#227' T'#224'i Li'#7879'u'
-            Width = 100
-          end
-          item
-            Caption = 'T'#234'n T'#224'i Li'#7879'u'
-            Width = 250
-          end
-          item
-            Caption = 'Ng'#224'y Y'#234'u C'#7847'u'
-            Width = 120
-          end
-          item
-            Caption = 'Ng'#224'y H'#7865'n M'#432#7907'n'
-            Width = 120
-          end
-          item
-            Caption = 'Ng'#224'y H'#7865'n Tr'#7843
-            Width = 120
-          end
-          item
-            Caption = 'Tr'#7841'ng Th'#225'i'
-            Width = 120
-          end
-          item
-            Caption = 'L'#253' Do'
-            Width = 150
-          end
-          item
-            Caption = 'Ghi Ch'#250
-            Width = 150
-          end>
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        GridLines = True
-        ReadOnly = True
-        ParentFont = False
-        TabOrder = 0
-        ViewStyle = vsReport
-        OnCustomDrawItem = lstvTra_LichSuMuonTraCustomDrawItem
-      end
-      object pnlLichSu_BoLoc: TPanel
-        Left = 0
-        Top = 0
-        Width = 1072
-        Height = 27
-        Align = alTop
-        BevelOuter = bvNone
-        Color = clInfoBk
-        ParentBackground = False
-        TabOrder = 1
-        object lblLichSu_NhanTrangThai: TLabel
-          Left = 0
-          Top = 0
-          Width = 81
-          Height = 27
-          Align = alLeft
-          Caption = 'Tr'#7841'ng th'#225'i:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clNavy
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-          Layout = tlCenter
-          ExplicitHeight = 21
-        end
-        object cboLichSu_TrangThai: TComboBox
-          Left = 81
-          Top = 0
-          Width = 840
-          Height = 29
-          Align = alLeft
-          Style = csDropDownList
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ItemIndex = 0
-          ParentFont = False
-          TabOrder = 0
-          Text = 'T'#7845't C'#7843
-          Items.Strings = (
-            'T'#7845't C'#7843
-            'Ch'#7901' Duy'#7879't M'#432#7907'n'
-            #272#227' Duy'#7879't M'#432#7907'n'
-            #272#227' T'#7915' Ch'#7889'i'
-            #272#227' M'#432#7907'n T'#224'i Li'#7879'u'
-            #272#227' H'#7911'y'
-            #272#227' Tr'#7843' T'#224'i Li'#7879'u'
-            'Ch'#7901' Duy'#7879't Tr'#7843
-            'Qu'#225' H'#7841'n Tr'#7843
-            'M'#7845't')
-        end
-        object btnLichSu_Loc: TBitBtn
-          Left = 921
-          Top = 0
-          Width = 100
-          Height = 27
-          Align = alLeft
-          Caption = 'L'#7885'c'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          Kind = bkRetry
-          NumGlyphs = 2
-          ParentFont = False
-          TabOrder = 1
-          OnClick = btnLichSu_LocClick
-          OnMouseEnter = btnLichSu_LocMouseEnter
-          OnMouseLeave = btnLichSu_LocMouseLeave
-        end
-      end
-    end
-    object TabSheet2: TTabSheet
-      Caption = 'T'#224'i Li'#7879'u '#272'ang M'#432#7907'n'
-      ImageIndex = 2
-      PopupMenu = PopupMenu2
-      object pnlMuon_TimKiem: TPanel
-        Left = 0
-        Top = 0
-        Width = 1072
-        Height = 33
-        Align = alTop
-        BevelOuter = bvNone
-        Color = clInfoBk
-        ParentBackground = False
-        TabOrder = 0
-        ExplicitWidth = 1066
-        object lblMuon_NhanTimKiem: TLabel
-          Left = 0
-          Top = 0
-          Width = 225
-          Height = 21
-          Align = alLeft
-          Caption = 'T'#236'm ki'#7871'm t'#224'i li'#7879'u '#273'ang m'#432#7907'n:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clNavy
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-          Layout = tlCenter
-        end
-        object edtMuon_TuKhoa: TEdit
-          Left = 225
-          Top = 0
-          Width = 665
-          Height = 33
-          Align = alLeft
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          Color = clWhite
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 0
-          TextHint = 'Nh'#7853'p t'#7915' kh'#243'a (t'#234'n t'#224'i li'#7879'u, m'#227' y'#234'u c'#7847'u, m'#227' t'#224'i li'#7879'u,...)'
-          ExplicitHeight = 29
-        end
-        object btnMuon_TimKiem: TBitBtn
-          Left = 890
-          Top = 0
-          Width = 100
-          Height = 33
-          Align = alLeft
-          Caption = 'T'#236'm Ki'#7871'm'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          Kind = bkRetry
-          NumGlyphs = 2
-          ParentFont = False
-          TabOrder = 1
-          OnMouseEnter = btnMuon_TimKiemMouseEnter
-          OnMouseLeave = btnMuon_TimKiemMouseLeave
-        end
-      end
-      object lstvDangMuon_DanhSach: TListView
-        Left = 0
-        Top = 33
-        Width = 1072
-        Height = 512
-        Align = alClient
-        BevelKind = bkSoft
-        Columns = <
-          item
-            Caption = 'TT'
-            Width = 40
-          end
-          item
-            Caption = 'M'#227' Y'#234'u C'#7847'u'
-            Width = 100
-          end
-          item
-            Caption = 'M'#227' T'#224'i Li'#7879'u'
-            Width = 100
-          end
-          item
-            Caption = 'T'#234'n T'#224'i Li'#7879'u'
-            Width = 300
-          end
-          item
-            Caption = 'Ng'#224'y H'#7865'n M'#432#7907'n'
-            Width = 120
-          end
-          item
-            Caption = 'Ng'#224'y H'#7865'n Tr'#7843
-            Width = 120
-          end
-          item
-            Caption = 'Ghi Ch'#250
-            Width = 150
-          end>
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        GridLines = True
-        MultiSelect = True
-        ReadOnly = True
-        RowSelect = True
-        ParentFont = False
-        PopupMenu = PopupMenu2
-        TabOrder = 1
-        ViewStyle = vsReport
-        OnCustomDrawItem = lstvDangMuon_DanhSachCustomDrawItem
-      end
-    end
-    object TabSheet4: TTabSheet
-      Caption = 'T'#224'i Li'#7879'u Qu'#225' H'#7841'n'
-      ImageIndex = 3
-      object lstvQuaHan_DanhSach: TListView
-        Left = 0
-        Top = 0
-        Width = 1072
-        Height = 545
-        Align = alClient
-        BevelKind = bkSoft
-        Columns = <
-          item
-            Caption = 'TT'
-            Width = 40
-          end
-          item
-            Caption = 'M'#227' Y'#234'u C'#7847'u'
-            Width = 100
-          end
-          item
-            Caption = 'M'#227' T'#224'i Li'#7879'u'
-            Width = 100
-          end
-          item
-            Caption = 'T'#234'n T'#224'i Li'#7879'u'
-            Width = 300
-          end
-          item
-            Caption = 'Ng'#224'y H'#7865'n Tr'#7843
-            Width = 120
-          end
-          item
-            Caption = 'S'#7889' Ng'#224'y Qu'#225' H'#7841'n'
-            Width = 120
-          end
-          item
-            Caption = 'Ti'#7873'n Ph'#7841't'
-            Width = 120
-          end>
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        GridLines = True
-        ReadOnly = True
-        RowSelect = True
-        ParentFont = False
-        TabOrder = 0
-        ViewStyle = vsReport
-        OnCustomDrawItem = lstvQuaHan_DanhSachCustomDrawItem
-      end
-    end
-  end
-  object PopupMenu1: TPopupMenu
-    OnPopup = PopupMenu1Popup
-    Left = 72
-    Top = 344
-    object mnuTraCuu_MuonTaiLieu: TMenuItem
-      Caption = '&M'#432#7907'n T'#224'i Li'#7879'u N'#224'y'
-      OnClick = mnuTraCuu_MuonTaiLieuClick
-    end
-  end
-  object PopupMenu2: TPopupMenu
-    OnPopup = PopupMenu2Popup
-    Left = 156
-    Top = 387
-    object mnuDangMuon_TraTaiLieu: TMenuItem
-      Caption = '&Tr'#7843' T'#224'i Li'#7879'u N'#224'y'
-      OnClick = mnuDangMuon_TraTaiLieuClick
-    end
-    object mnuDangMuon_GiaHanTaiLieu: TMenuItem
-      Caption = '&Gia H'#7841'n T'#224'i Li'#7879'u N'#224'y'
-      OnClick = mnuDangMuon_GiaHanTaiLieuClick
-    end
-  end
-  object Timer1: TTimer
-    Enabled = False
-    Interval = 50
-    OnTimer = Timer1Timer
-    Left = 148
-    Top = 444
   end
 end

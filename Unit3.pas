@@ -8,7 +8,7 @@ uses
     FireDAC.Comp.Client,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
-  FireDAC.Phys;
+  FireDAC.Phys, Vcl.Buttons, Vcl.ExtCtrls, Vcl.Imaging.pngimage;
 
 type
   TfrmDoiMatKhau = class(TForm)
@@ -17,8 +17,10 @@ type
     lblXacNhanMatKhauMoi: TLabel;
     edtMatKhauMoi: TEdit;
     edtXacNhanMatKhauMoi: TEdit;
-    btnDoiMatKhau: TButton;
-    btnHuyDoiMatKhau: TButton;
+    btnDoiMatKhau: TSpeedButton;
+    btnHuyDoiMatKhau: TSpeedButton;
+    pnlMain: TPanel;
+    Image1: TImage;
     procedure btnDoiMatKhauClick(Sender: TObject);
     procedure btnHuyDoiMatKhauClick(Sender: TObject);
   private

@@ -8,19 +8,22 @@ uses
   FireDAC.Comp.Client,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
-  FireDAC.Phys;
+  FireDAC.Phys, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.Buttons;
 
 type
   TfrmLogin = class(TForm)
     lblMSSV: TLabel;
+    imgLogo: TImage;
+    lblTitle: TLabel;
     lblMatKhau: TLabel;
     lblNgaySinh: TLabel;
     edtMaSV: TEdit;
     edtMatKhau: TEdit;
-    btnDangNhap: TButton;
-    Label1: TLabel;
+    btnDangNhap: TBitBtn;
     edtNgaySinh: TEdit;
-    btnThoat: TButton;
+    btnThoat: TBitBtn;
+    pnlMain: TPanel;  // Khai báo pnlMain
+    pnlInput: TPanel;  // Khai báo pnlInput
     procedure btnDangNhapClick(Sender: TObject);
     procedure btnThoatClick(Sender: TObject);
     procedure edtNgaySinhKeyPress(Sender: TObject; var Key: Char);

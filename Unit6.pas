@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls;
 
 type
   TfrmNhapGiaHan = class(TForm)
@@ -14,6 +15,7 @@ type
     dtpNgayHenTraMoi: TDateTimePicker;
     btnXacNhanGiaHan: TButton;
     btnHuyGiaHan: TButton;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }

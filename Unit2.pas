@@ -6,15 +6,16 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
   Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls, Unit4, Vcl.Menus, Unit1, Vcl.ToolWin,
-  Vcl.Tabs, Vcl.DockTabSet;
+  Vcl.Tabs, Vcl.DockTabSet, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage, System.Math,
+  Vcl.Buttons;
 
 type
   TfrmMain = class(TForm)
     pnlHeader: TPanel;
     lblHoTen: TLabel;
-    btnDangXuat: TButton;
-    btnDoiMatKhau_Header: TButton;
-    btnThoat: TButton;
+    btnDangXuat: TBitBtn;
+    btnDoiMatKhau_Header: TBitBtn;
+    btnThoat: TBitBtn;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -23,14 +24,14 @@ type
     pnlTraCuu_TimKiem: TPanel;
     lblTraCuu_NhanTimKiem: TLabel;
     edtTraCuu_TuKhoa: TEdit;
-    btnTraCuu_TimKiem: TButton;
+    btnTraCuu_TimKiem: TBitBtn;
     lstvTraCuu_DanhSachTaiLieu: TListView;
     PopupMenu1: TPopupMenu;
     mnuTraCuu_MuonTaiLieu: TMenuItem;
     pnlMuon_TimKiem: TPanel;
     lblMuon_NhanTimKiem: TLabel;
     edtMuon_TuKhoa: TEdit;
-    btnMuon_TimKiem: TButton;
+    btnMuon_TimKiem: TBitBtn;
     PopupMenu2: TPopupMenu;
     mnuDangMuon_TraTaiLieu: TMenuItem;
     mnuDangMuon_GiaHanTaiLieu: TMenuItem;
@@ -39,10 +40,11 @@ type
     pnlLichSu_BoLoc: TPanel;
     lblLichSu_NhanTrangThai: TLabel;
     cboLichSu_TrangThai: TComboBox;
-    btnLichSu_Loc: TButton;
+    btnLichSu_Loc: TBitBtn;
     lstvDangMuon_DanhSach: TListView;
-    pnlThanhToan_Button: TPanel;
-    btnThanhToan_QuaHan: TButton;
+    imgAvatar: TImage;
+    Timer1: TTimer;
+    btnThongBao: TBitBtn;
     procedure btnDangXuatClick(Sender: TObject);
     procedure btnThoatClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -55,14 +57,46 @@ type
     procedure mnuDangMuon_TraTaiLieuClick(Sender: TObject);
     procedure mnuDangMuon_GiaHanTaiLieuClick(Sender: TObject);
     procedure btnThanhToan_QuaHanClick(Sender: TObject);
+    procedure btnDoiMatKhau_HeaderClick(Sender: TObject);
+    procedure btnDangXuatMouseEnter(Sender: TObject);
+    procedure btnDangXuatMouseLeave(Sender: TObject);
+    procedure btnDoiMatKhau_HeaderMouseEnter(Sender: TObject);
+    procedure btnDoiMatKhau_HeaderMouseLeave(Sender: TObject);
+    procedure btnThoatMouseEnter(Sender: TObject);
+    procedure btnThoatMouseLeave(Sender: TObject);
+    procedure btnTraCuu_TimKiemMouseEnter(Sender: TObject);
+    procedure btnTraCuu_TimKiemMouseLeave(Sender: TObject);
+    procedure btnLichSu_LocMouseEnter(Sender: TObject);
+    procedure btnLichSu_LocMouseLeave(Sender: TObject);
+    procedure btnMuon_TimKiemMouseEnter(Sender: TObject);
+    procedure btnMuon_TimKiemMouseLeave(Sender: TObject);
+    procedure lstvTraCuu_DanhSachTaiLieuCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lstvTra_LichSuMuonTraCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lstvDangMuon_DanhSachCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lstvQuaHan_DanhSachCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure btnThongBaoClick(Sender: TObject);
   private
     FHoTenNguoiDung: string;
     FMSSV_DangNhap: string;
+    FThongBaoDaHienThi: TStringList;
+    FadeStep: Integer;
+    FadeDirection: Integer;
     procedure HienThiDuLieuTraCuu;
     procedure HienThiDuLieuLichSu;
     procedure HienThiDuLieuDangMuon;
     procedure HienThiDuLieuQuaHan;
     procedure CapNhatTrangThaiQuaHan;
+    procedure StartFadeIn;
+    procedure StartFadeOut;
+    procedure HienThiThongBao;
+    function LayTatCaThongBao: TStringList;
   public
     property HoTenNguoiDung: string read FHoTenNguoiDung write FHoTenNguoiDung;
     property MSSV_DangNhap: string read FMSSV_DangNhap write FMSSV_DangNhap;
@@ -76,33 +110,254 @@ implementation
 {$R *.dfm}
 
 uses
-  FireDAC.Comp.Client, Unit5, Unit6;
+  FireDAC.Comp.Client, Unit5, Unit6, Unit7, Unit8;
+
 procedure TfrmMain.CapNhatTrangThaiQuaHan;
 var
   Query: TFDQuery;
 begin
+  if not DM_DuLieu.FDConnection.Connected then
+    raise Exception.Create('Kết nối cơ sở dữ liệu không hoạt động.');
+
   Query := TFDQuery.Create(nil);
   try
     Query.Connection := DM_DuLieu.FDConnection;
-
+    DM_DuLieu.FDConnection.StartTransaction;
     try
       Query.SQL.Text := 'EXEC [dbo].[sp_XuLyQuaHanMuonTraTaiLieu]';
       Query.ExecSQL;
 
       Query.SQL.Text := 'EXEC [dbo].[sp_TinhTienPhatQuaHanTaiLieu] @SoNgayTre = 1, @TienPhatMoiNgay = 5000';
       Query.ExecSQL;
+      DM_DuLieu.FDConnection.Commit;
     except
       on E: Exception do
       begin
+        DM_DuLieu.FDConnection.Rollback;
         ShowMessage('Lỗi khi cập nhật trạng thái quá hạn hoặc tính tiền phạt: ' + E.Message);
       end;
     end;
-
   finally
     Query.Free;
   end;
 end;
 
+function TfrmMain.LayTatCaThongBao: TStringList;
+var
+  Query: TFDQuery;
+  ThongBao: string;
+  ThongBaoList: TStringList;
+begin
+  ThongBaoList := TStringList.Create;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := DM_DuLieu.FDConnection;
+
+    // Truy vấn thông báo từ v_ChiTietMuonTraTaiLieu
+    Query.SQL.Text :=
+      'SELECT mt.MaYeuCau, mt.TenTaiLieu, mt.TrangThai, mt.TenTrangThai, mt.NgayDuyet, mt.TienPhat, mt.SoNgayTre ' +
+      'FROM v_ChiTietMuonTraTaiLieu mt ' +
+      'WHERE mt.MSSV = :MSSV AND mt.TrangThai IN (2, 3, 5, 6, 7, 8, 9) ' +
+      'AND mt.NgayDuyet >= DATEADD(day, -30, GETDATE())';
+    Query.Params.ParamByName('MSSV').DataType := ftWideString;
+    Query.Params.ParamByName('MSSV').AsString := FMSSV_DangNhap;
+    Query.Open;
+
+    // Duyệt qua các yêu cầu và tạo thông báo
+    while not Query.EOF do
+    begin
+      ThongBao := '';
+      case Query.FieldByName('TrangThai').AsInteger of
+        2: // Đã duyệt mượn
+          ThongBao := 'Yêu cầu mượn tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã được duyệt.';
+        3: // Đã từ chối mượn
+          ThongBao := 'Yêu cầu mượn tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã bị từ chối.';
+        5: // Đã hủy mượn
+          ThongBao := 'Yêu cầu mượn tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã bị hủy.';
+        6: // Đã trả tài liệu
+          ThongBao := 'Tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã được ghi nhận trả thành công.';
+        7: // Chờ duyệt trả
+          ThongBao := 'Yêu cầu trả tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đang chờ duyệt.';
+        8: // Quá hạn trả tài liệu
+          ThongBao := 'Tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã quá hạn ' +
+                     Query.FieldByName('SoNgayTre').AsString + ' ngày. Tiền phạt: ' +
+                     FormatFloat('#,##0', Query.FieldByName('TienPhat').AsFloat) + ' VND.';
+        9: // Mất
+          ThongBao := 'Tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') được ghi nhận là mất.';
+      end;
+      if ThongBao <> '' then
+        ThongBaoList.Add(ThongBao);
+      Query.Next;
+    end;
+
+    // Truy vấn thông báo từ bảng ThongBao
+    Query.Close;
+    Query.SQL.Text :=
+      'SELECT TieuDe, NoiDung, NgayTao ' +
+      'FROM ThongBao ' +
+      'WHERE MSSV = :MSSV AND NgayTao >= DATEADD(day, -30, GETDATE()) ' +
+      'ORDER BY NgayTao DESC';
+    Query.Params.ParamByName('MSSV').DataType := ftWideString;
+    Query.Params.ParamByName('MSSV').AsString := FMSSV_DangNhap;
+    Query.Open;
+
+    // Duyệt qua các thông báo và thêm vào danh sách
+    while not Query.EOF do
+    begin
+      ThongBao := '[' + FormatDateTime('dd/mm/yyyy hh:nn', Query.FieldByName('NgayTao').AsDateTime) + '] ' +
+                 Query.FieldByName('TieuDe').AsString + #13#10 +
+                 Query.FieldByName('NoiDung').AsString;
+      ThongBaoList.Add(ThongBao);
+      Query.Next;
+    end;
+
+  finally
+    Query.Free;
+    Result := ThongBaoList;
+  end;
+end;
+
+procedure TfrmMain.HienThiThongBao;
+var
+  Query: TFDQuery;
+  LastCheck: TDateTime;
+  ThongBaoList: TStringList;
+  ThongBao: string;
+  TatCaThongBao: string;
+  SoLuongHienThi: Integer;
+  SoLuongConLai: Integer;
+  frmThongBao: TfrmThongBao;
+begin
+  Query := TFDQuery.Create(nil);
+  ThongBaoList := TStringList.Create;
+  try
+    Query.Connection := DM_DuLieu.FDConnection;
+
+    // Lấy thời gian kiểm tra thông báo cuối cùng
+    Query.SQL.Text := 'SELECT LastNotificationCheck FROM SinhVien WHERE MSSV = :MSSV';
+    Query.Params.ParamByName('MSSV').DataType := ftWideString;
+    Query.Params.ParamByName('MSSV').AsString := FMSSV_DangNhap;
+    Query.Open;
+
+    if Query.IsEmpty then
+    begin
+      ShowMessage('Không tìm thấy thông tin sinh viên.');
+      Exit;
+    end;
+
+    LastCheck := Query.FieldByName('LastNotificationCheck').AsDateTime;
+    if LastCheck = 0 then
+      LastCheck := EncodeDate(2000, 1, 1); // Nếu chưa có, đặt một giá trị mặc định xa
+
+    // Truy vấn các yêu cầu mượn/trả có thay đổi trạng thái sau lần kiểm tra cuối
+    Query.Close;
+    Query.SQL.Text :=
+      'SELECT mt.MaYeuCau, mt.TenTaiLieu, mt.TrangThai, mt.TenTrangThai, mt.NgayDuyet, mt.TienPhat, mt.SoNgayTre ' +
+      'FROM v_ChiTietMuonTraTaiLieu mt ' +
+      'WHERE mt.MSSV = :MSSV AND (mt.NgayDuyet > :LastCheck OR mt.NgayDuyet IS NULL) ' +
+      'AND mt.TrangThai IN (2, 3, 5, 6, 7, 8, 9)';
+    Query.Params.ParamByName('MSSV').DataType := ftWideString;
+    Query.Params.ParamByName('MSSV').AsString := FMSSV_DangNhap;
+    Query.Params.ParamByName('LastCheck').DataType := ftDateTime;
+    Query.Params.ParamByName('LastCheck').AsDateTime := LastCheck;
+    Query.Open;
+
+    // Duyệt qua các yêu cầu và tạo thông báo
+    while not Query.EOF do
+    begin
+      ThongBao := '';
+      case Query.FieldByName('TrangThai').AsInteger of
+        2: // Đã duyệt mượn
+          ThongBao := 'Yêu cầu mượn tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã được duyệt.';
+        3: // Đã từ chối mượn
+          ThongBao := 'Yêu cầu mượn tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã bị từ chối.';
+        5: // Đã hủy mượn
+          ThongBao := 'Yêu cầu mượn tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã bị hủy.';
+        6: // Đã trả tài liệu
+          ThongBao := 'Tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã được ghi nhận trả thành công.';
+        7: // Chờ duyệt trả
+          ThongBao := 'Yêu cầu trả tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đang chờ duyệt.';
+        8: // Quá hạn trả tài liệu
+          ThongBao := 'Tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') đã quá hạn ' +
+                     Query.FieldByName('SoNgayTre').AsString + ' ngày. Tiền phạt: ' +
+                     FormatFloat('#,##0', Query.FieldByName('TienPhat').AsFloat) + ' VND.';
+        9: // Mất
+          ThongBao := 'Tài liệu "' + Query.FieldByName('TenTaiLieu').AsString +
+                     '" (Mã yêu cầu: ' + Query.FieldByName('MaYeuCau').AsString + ') được ghi nhận là mất.';
+      end;
+      if ThongBao <> '' then
+        ThongBaoList.Add(ThongBao);
+      Query.Next;
+    end;
+
+    // Truy vấn các thông báo từ bảng ThongBao có NgayTao sau LastCheck
+    Query.Close;
+    Query.SQL.Text :=
+      'SELECT TieuDe, NoiDung, NgayTao ' +
+      'FROM ThongBao ' +
+      'WHERE MSSV = :MSSV AND NgayTao > :LastCheck ' +
+      'ORDER BY NgayTao DESC';
+    Query.Params.ParamByName('MSSV').DataType := ftWideString;
+    Query.Params.ParamByName('MSSV').AsString := FMSSV_DangNhap;
+    Query.Params.ParamByName('LastCheck').DataType := ftDateTime;
+    Query.Params.ParamByName('LastCheck').AsDateTime := LastCheck;
+    Query.Open;
+
+    // Duyệt qua các thông báo và thêm vào danh sách
+    while not Query.EOF do
+    begin
+      ThongBao := '[' + FormatDateTime('dd/mm/yyyy hh:nn', Query.FieldByName('NgayTao').AsDateTime) + '] ' +
+                 Query.FieldByName('TieuDe').AsString + #13#10 +
+                 Query.FieldByName('NoiDung').AsString;
+      ThongBaoList.Add(ThongBao);
+      Query.Next;
+    end;
+
+    // Gộp và hiển thị thông báo
+    if ThongBaoList.Count > 0 then
+    begin
+      SoLuongHienThi := Min(50, ThongBaoList.Count); // Hiển thị tối đa 50 thông báo
+      TatCaThongBao := 'Bạn có ' + IntToStr(ThongBaoList.Count) + ' thông báo mới:' + #13#10 + #13#10;
+      TatCaThongBao := TatCaThongBao + ThongBaoList.Text;
+
+      // Lưu thông báo mới vào biến toàn cục
+      FThongBaoDaHienThi.Clear;
+      FThongBaoDaHienThi.Assign(ThongBaoList);
+
+      // Nếu có nhiều hơn 50 thông báo, thêm thông báo tràn
+      if ThongBaoList.Count > 50 then
+      begin
+        SoLuongConLai := ThongBaoList.Count - 50;
+        TatCaThongBao := TatCaThongBao + #13#10 + '...và ' + IntToStr(SoLuongConLai) + ' thông báo khác.';
+      end;
+
+      frmThongBao := TfrmThongBao.Create(Self);
+      try
+        frmThongBao.MSSV := FMSSV_DangNhap;
+        frmThongBao.memoThongBao.Text := Copy(TatCaThongBao, 1, Length(TatCaThongBao));
+        frmThongBao.ShowModal;
+      finally
+        frmThongBao.Free;
+      end;
+    end;
+  finally
+    Query.Free;
+    ThongBaoList.Free;
+  end;
+end;
 
 procedure TfrmMain.HienThiDuLieuTraCuu;
 var
@@ -136,6 +391,47 @@ begin
       DM_DuLieu.FDQuery_TaiLieuTongHop.Next;
     end;
   end;
+end;
+
+procedure TfrmMain.lstvDangMuon_DanhSachCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  if Item.Index mod 2 = 0 then
+    Sender.Canvas.Brush.Color := clWhite
+  else
+    Sender.Canvas.Brush.Color := $00F5F5F5;
+  DefaultDraw := True;
+end;
+
+procedure TfrmMain.lstvQuaHan_DanhSachCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  if Item.Index mod 2 = 0 then
+    Sender.Canvas.Brush.Color := clWhite
+  else
+    Sender.Canvas.Brush.Color := $00F5F5F5;
+  DefaultDraw := True;
+end;
+
+procedure TfrmMain.lstvTraCuu_DanhSachTaiLieuCustomDrawItem(
+  Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
+  var DefaultDraw: Boolean);
+begin
+  if Item.Index mod 2 = 0 then
+    Sender.Canvas.Brush.Color := clWhite
+  else
+    Sender.Canvas.Brush.Color := $00F5F5F5;
+  DefaultDraw := True;
+end;
+
+procedure TfrmMain.lstvTra_LichSuMuonTraCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  if Item.Index mod 2 = 0 then
+    Sender.Canvas.Brush.Color := clWhite
+  else
+    Sender.Canvas.Brush.Color := $00F5F5F5;
+  DefaultDraw := True;
 end;
 
 procedure TfrmMain.HienThiDuLieuLichSu;
@@ -203,28 +499,18 @@ var
   MuonTraID: Int64;
 begin
   lstvQuaHan_DanhSach.Items.Clear;
-  CapNhatTrangThaiQuaHan;
-  DM_DuLieu.FDQuery_QuaHan.Close;
-  DM_DuLieu.FDQuery_QuaHan.ParamByName('MSSV_Login').AsString := FMSSV_DangNhap;
   try
+    CapNhatTrangThaiQuaHan;
+    DM_DuLieu.FDQuery_QuaHan.Close;
+    DM_DuLieu.FDQuery_QuaHan.ParamByName('MSSV_Login').AsString := FMSSV_DangNhap;
     DM_DuLieu.FDQuery_QuaHan.Open;
-  except
-    on E: Exception do
+
+    if DM_DuLieu.FDQuery_QuaHan.IsEmpty then
     begin
-      ShowMessage('Lỗi khi truy vấn danh sách quá hạn: ' + E.Message);
+      ShowMessage('Không có tài liệu quá hạn nào được tìm thấy.');
       Exit;
     end;
-  end;
 
-  // Kiểm tra xem truy vấn có trả về dữ liệu không
-  if DM_DuLieu.FDQuery_QuaHan.IsEmpty then
-  begin
-    ShowMessage('Không có tài liệu quá hạn nào được tìm thấy. Kiểm tra trạng thái và tiền phạt trong cơ sở dữ liệu.');
-    Exit;
-  end;
-
-  if DM_DuLieu.FDQuery_QuaHan.Active then
-  begin
     DM_DuLieu.FDQuery_QuaHan.First;
     STT := 1;
     while not DM_DuLieu.FDQuery_QuaHan.EOF do
@@ -241,6 +527,11 @@ begin
       ListItem.Data := Pointer(MuonTraID);
       Inc(STT);
       DM_DuLieu.FDQuery_QuaHan.Next;
+    end;
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Lỗi khi hiển thị danh sách quá hạn: ' + E.Message);
     end;
   end;
 end;
@@ -276,40 +567,46 @@ begin
 
       SuccessCount := 0;
       ErrorMsg := '';
-
-      for i := 0 to lstvTraCuu_DanhSachTaiLieu.Items.Count - 1 do
-      begin
-        SelectedItem := lstvTraCuu_DanhSachTaiLieu.Items[i];
-        if SelectedItem.Selected then
+      DM_DuLieu.FDConnection.StartTransaction;
+      try
+        for i := 0 to lstvTraCuu_DanhSachTaiLieu.Items.Count - 1 do
         begin
-          SelectedTaiLieuID := Int64(SelectedItem.Data);
-
-          try
-            DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('MSSV').AsString := FMSSV_DangNhap;
-            DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('TaiLieuID').AsLargeInt := SelectedTaiLieuID;
-            DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('NgayHenMuon').AsDate := NgayHenMuonValue;
-            DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('NgayHenTra').AsDate := NgayHenTraValue;
-            DM_DuLieu.FDQuery_InsertYeuCauMuon.ExecSQL;
-            Inc(SuccessCount);
-          except
-            on E: Exception do
-            begin
-              ErrorMsg := ErrorMsg + 'Lỗi khi yêu cầu mượn tài liệu ID ' + IntToStr(SelectedTaiLieuID) + ': ' + E.Message + #13#10;
+          SelectedItem := lstvTraCuu_DanhSachTaiLieu.Items[i];
+          if SelectedItem.Selected then
+          begin
+            SelectedTaiLieuID := Int64(SelectedItem.Data);
+            try
+              DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('MSSV').AsString := FMSSV_DangNhap;
+              DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('TaiLieuID').AsLargeInt := SelectedTaiLieuID;
+              DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('NgayHenMuon').AsDate := NgayHenMuonValue;
+              DM_DuLieu.FDQuery_InsertYeuCauMuon.ParamByName('NgayHenTra').AsDate := NgayHenTraValue;
+              DM_DuLieu.FDQuery_InsertYeuCauMuon.ExecSQL;
+              Inc(SuccessCount);
+            except
+              on E: Exception do
+              begin
+                ErrorMsg := ErrorMsg + 'Lỗi khi yêu cầu mượn tài liệu ID ' + IntToStr(SelectedTaiLieuID) + ': ' + E.Message + #13#10;
+              end;
             end;
           end;
         end;
-      end;
 
-      if SuccessCount > 0 then
-      begin
-        ShowMessage('Đã gửi ' + IntToStr(SuccessCount) + ' yêu cầu mượn thành công. Vui lòng chờ duyệt.');
-        PageControl1.ActivePageIndex := 1;
-        cboLichSu_TrangThai.ItemIndex := 1; // Chờ duyệt mượn
-        btnLichSu_LocClick(nil);
-      end;
-      if ErrorMsg <> '' then
-      begin
-        ShowMessage('Có lỗi xảy ra:' + #13#10 + ErrorMsg);
+        if SuccessCount > 0 then
+        begin
+          ShowMessage('Đã gửi ' + IntToStr(SuccessCount) + ' yêu cầu mượn thành công. Vui lòng chờ duyệt.');
+          PageControl1.ActivePageIndex := 1;
+          cboLichSu_TrangThai.ItemIndex := 1; // Chờ duyệt mượn
+          btnLichSu_LocClick(nil);
+        end;
+        if ErrorMsg <> '' then
+          ShowMessage('Có lỗi xảy ra:' + #13#10 + ErrorMsg);
+        DM_DuLieu.FDConnection.Commit;
+      except
+        on E: Exception do
+        begin
+          DM_DuLieu.FDConnection.Rollback;
+          ShowMessage('Lỗi khi xử lý yêu cầu mượn: ' + E.Message);
+        end;
       end;
     end;
   finally
@@ -333,7 +630,7 @@ begin
     QueryUpdate.Connection := DM_DuLieu.FDConnection;
     QueryUpdate.SQL.Text :=
       'UPDATE MuonTraTaiLieu ' +
-      'SET TrangThai = 7, ' + // Chờ duyệt trả
+      'SET TrangThai = 7, ' +
       '    GhiChu = ISNULL(GhiChu + CHAR(13) + CHAR(10), '''') + N''Yêu cầu trả tài liệu vào '' + CONVERT(NVARCHAR, GETDATE(), 103) ' +
       'WHERE ID = :ID AND TrangThai = 4';
     QueryUpdate.Params.CreateParam(ftLargeInt, 'ID', ptInput);
@@ -498,6 +795,56 @@ begin
   Application.Terminate;
 end;
 
+procedure TfrmMain.btnThoatMouseEnter(Sender: TObject);
+begin
+  btnThoat.Font.Color := $00D5E8FF;
+end;
+
+procedure TfrmMain.btnThoatMouseLeave(Sender: TObject);
+begin
+  btnThoat.Font.Color := clBtnFace;
+end;
+
+procedure TfrmMain.btnThongBaoClick(Sender: TObject);
+var
+  frmThongBao: TfrmThongBao;
+  TatCaThongBao: string;
+  ThongBaoList: TStringList;
+  SoLuongConLai: Integer;
+begin
+  ThongBaoList := LayTatCaThongBao; // Lấy tất cả thông báo từ cơ sở dữ liệu
+  try
+    if ThongBaoList.Count = 0 then
+    begin
+      ShowMessage('Không có thông báo nào để hiển thị.');
+      Exit;
+    end;
+
+    // Gộp lại tất cả thông báo
+    TatCaThongBao := 'Bạn có ' + IntToStr(ThongBaoList.Count) + ' thông báo:' + #13#10 + #13#10;
+    TatCaThongBao := TatCaThongBao + ThongBaoList.Text;
+
+    // Nếu có nhiều hơn 50 thông báo, thêm thông báo tràn
+    if ThongBaoList.Count > 50 then
+    begin
+      SoLuongConLai := ThongBaoList.Count - 50;
+      TatCaThongBao := TatCaThongBao + #13#10 + '...và ' + IntToStr(SoLuongConLai) + ' thông báo khác.';
+    end;
+
+    // Hiển thị form thông báo
+    frmThongBao := TfrmThongBao.Create(Self);
+    try
+      frmThongBao.MSSV := FMSSV_DangNhap;
+      frmThongBao.memoThongBao.Text := Copy(TatCaThongBao, 1, Length(TatCaThongBao));
+      frmThongBao.ShowModal;
+    finally
+      frmThongBao.Free;
+    end;
+  finally
+    ThongBaoList.Free;
+  end;
+end;
+
 procedure TfrmMain.btnTraCuu_TimKiemClick(Sender: TObject);
 var
   TuKhoa: string;
@@ -524,6 +871,52 @@ begin
 
   DM_DuLieu.FDQuery_TaiLieuTongHop.Open;
   HienThiDuLieuTraCuu;
+end;
+
+procedure TfrmMain.btnTraCuu_TimKiemMouseEnter(Sender: TObject);
+begin
+  btnTraCuu_TimKiem.Font.Color := $00D5E8FF;
+end;
+
+procedure TfrmMain.btnTraCuu_TimKiemMouseLeave(Sender: TObject);
+begin
+  btnTraCuu_TimKiem.Font.Color := clBtnFace;
+end;
+
+procedure TfrmMain.btnDangXuatMouseEnter(Sender: TObject);
+begin
+  btnDangXuat.Font.Color := $00D5E8FF;
+end;
+
+procedure TfrmMain.btnDangXuatMouseLeave(Sender: TObject);
+begin
+  btnDangXuat.Font.Color := clBtnFace;
+end;
+
+procedure TfrmMain.btnDoiMatKhau_HeaderClick(Sender: TObject);
+var
+  frmDoiMatKhau: TfrmDoiMatKhauMoi;
+begin
+  frmDoiMatKhau := TfrmDoiMatKhauMoi.Create(Self);
+  try
+    frmDoiMatKhau.MSSV := FMSSV_DangNhap;
+    if frmDoiMatKhau.ShowModal = mrOk then
+    begin
+      // Không cần làm gì thêm vì thông báo đã được hiển thị trong frmDoiMatKhau
+    end;
+  finally
+    frmDoiMatKhau.Free;
+  end;
+end;
+
+procedure TfrmMain.btnDoiMatKhau_HeaderMouseEnter(Sender: TObject);
+begin
+  btnDoiMatKhau_Header.Font.Color := $00D5E8FF;
+end;
+
+procedure TfrmMain.btnDoiMatKhau_HeaderMouseLeave(Sender: TObject);
+begin
+  btnDoiMatKhau_Header.Font.Color := clBtnFace;
 end;
 
 procedure TfrmMain.btnLichSu_LocClick(Sender: TObject);
@@ -554,6 +947,7 @@ begin
     6: TrangThaiFilter := 6; // Đã trả tài liệu
     7: TrangThaiFilter := 7; // Chờ duyệt trả
     8: TrangThaiFilter := 8; // Quá hạn trả tài liệu
+    9: TrangThaiFilter := 9; // Mất
   end;
 
   if TrangThaiFilter <> -99 then
@@ -580,12 +974,31 @@ begin
   HienThiDuLieuLichSu;
 end;
 
-procedure TfrmMain.FormActivate(Sender: TObject);
+procedure TfrmMain.btnLichSu_LocMouseEnter(Sender: TObject);
+begin
+  btnLichSu_Loc.Font.Color := $00D5E8FF;
+end;
 
+procedure TfrmMain.btnLichSu_LocMouseLeave(Sender: TObject);
+begin
+  btnLichSu_Loc.Font.Color := clBtnFace;
+end;
+
+procedure TfrmMain.btnMuon_TimKiemMouseEnter(Sender: TObject);
+begin
+  btnMuon_TimKiem.Font.Color := $00D5E8FF;
+end;
+
+procedure TfrmMain.btnMuon_TimKiemMouseLeave(Sender: TObject);
+begin
+  btnMuon_TimKiem.Font.Color := clBtnFace;
+end;
+
+procedure TfrmMain.FormActivate(Sender: TObject);
 begin
   lblHoTen.Caption := 'Chào mừng, ' + HoTenNguoiDung;
   CapNhatTrangThaiQuaHan;
-
+  HienThiThongBao; // Gọi thủ tục hiển thị thông báo
 
   DM_DuLieu.FDQuery_TaiLieuTongHop.Close;
   if not DM_DuLieu.FDQuery_TaiLieuTongHop.Active then
@@ -599,6 +1012,16 @@ begin
   end;
 
   HienThiDuLieuTraCuu;
+end;
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+begin
+  FThongBaoDaHienThi := TStringList.Create;
+end;
+
+procedure TfrmMain.FormDestroy(Sender: TObject);
+begin
+    FThongBaoDaHienThi.Free;
 end;
 
 procedure TfrmMain.PageControl1Change(Sender: TObject);
@@ -653,6 +1076,49 @@ procedure TfrmMain.PopupMenu2Popup(Sender: TObject);
 begin
   mnuDangMuon_TraTaiLieu.Enabled := (lstvDangMuon_DanhSach.SelCount = 1);
   mnuDangMuon_GiaHanTaiLieu.Enabled := (lstvDangMuon_DanhSach.SelCount = 1);
+end;
+
+procedure TfrmMain.StartFadeOut;
+begin
+  FadeStep := 255;
+  FadeDirection := -1;
+  Timer1.Enabled := True;
+end;
+
+procedure TfrmMain.StartFadeIn;
+begin
+  FadeStep := 0;
+  FadeDirection := 1;
+  Timer1.Enabled := True;
+end;
+
+procedure TfrmMain.Timer1Timer(Sender: TObject);
+var
+  TabSheet: TTabSheet;
+begin
+  if PageControl1.ActivePage = nil then Exit;
+
+  TabSheet := PageControl1.ActivePage;
+  FadeStep := FadeStep + (FadeDirection * 25);
+
+  if FadeStep <= 0 then
+  begin
+    Timer1.Enabled := False;
+    TabSheet.Visible := False;
+    StartFadeIn;
+  end
+  else if FadeStep >= 255 then
+  begin
+    Timer1.Enabled := False;
+    TabSheet.Visible := True;
+  end
+  else
+  begin
+    if FadeDirection = -1 then
+      TabSheet.Visible := False
+    else
+      TabSheet.Visible := True;
+  end;
 end;
 
 end.

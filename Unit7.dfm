@@ -1,16 +1,17 @@
-object frmNhapGiaHan: TfrmNhapGiaHan
+object frmDoiMatKhauMoi: TfrmDoiMatKhauMoi
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Gia h'#7841'n t'#224'i li'#7879'u'
-  ClientHeight = 287
-  ClientWidth = 541
+  Caption = #272#7893'i m'#7853't kh'#7849'u'
+  ClientHeight = 261
+  ClientWidth = 384
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  FormStyle = fsStayOnTop
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000040000C30E0000C30E000000000000000000000000
@@ -48,15 +49,26 @@ object frmNhapGiaHan: TfrmNhapGiaHan
     3DF4B98445D4BD915B91B379392C00000000000000000000000000000000F00F
     0000C00300008001000080010000000000000000000000000000000000000000
     00000000000000000000000000008001000080010000C0030000F00F0000}
-  Position = poScreenCenter
-  OnCreate = FormCreate
   TextHeight = 15
-  object lblNgayHienTai: TLabel
-    Left = 96
-    Top = 72
-    Width = 186
+  object lblTitle2: TLabel
+    Left = 150
+    Top = 20
+    Width = 109
+    Height = 19
+    Caption = #272#7893'i m'#7853't kh'#7849'u'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblMatKhauCu: TLabel
+    Left = 8
+    Top = 66
+    Width = 111
     Height = 28
-    Caption = 'Ng'#224'y h'#7865'n tr'#7843' hi'#7879'n t'#7841'i:'
+    Caption = 'M'#7853't kh'#7849'u c'#361':'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
@@ -64,12 +76,12 @@ object frmNhapGiaHan: TfrmNhapGiaHan
     Font.Style = []
     ParentFont = False
   end
-  object lblNgayHenTraHienTai: TLabel
-    Left = 296
-    Top = 72
-    Width = 128
+  object lblMatKhauMoi: TLabel
+    Left = 8
+    Top = 109
+    Width = 125
     Height = 28
-    Caption = '[Ng'#224'y hi'#7879'n t'#7841'i]'
+    Caption = 'M'#7853't kh'#7849'u m'#7899'i:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
@@ -77,12 +89,12 @@ object frmNhapGiaHan: TfrmNhapGiaHan
     Font.Style = []
     ParentFont = False
   end
-  object lblNgayHenTraMoi: TLabel
-    Left = 96
-    Top = 128
-    Width = 156
+  object lblXacNhanMatKhauMoi: TLabel
+    Left = 8
+    Top = 152
+    Width = 208
     Height = 28
-    Caption = 'Ng'#224'y h'#7865'n tr'#7843' m'#7899'i:'
+    Caption = 'X'#225'c nh'#7853'n m'#7853't kh'#7849'u m'#7899'i:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
@@ -91,8 +103,8 @@ object frmNhapGiaHan: TfrmNhapGiaHan
     ParentFont = False
   end
   object Image1: TImage
-    Left = 14
-    Top = 12
+    Left = 8
+    Top = 5
     Width = 55
     Height = 55
     Picture.Data = {
@@ -302,27 +314,54 @@ object frmNhapGiaHan: TfrmNhapGiaHan
       763A2B258EE65213EB73C647C21C9372F692A7D445A6850B17DEFD370D5A8FFF
       057556F5EF2AF515050000000049454E44AE426082}
   end
-  object dtpNgayHenTraMoi: TDateTimePicker
-    Left = 288
-    Top = 124
-    Width = 186
+  object edtMatKhauCu: TEdit
+    Left = 222
+    Top = 63
+    Width = 150
     Height = 36
-    Date = 45747.000000000000000000
-    Time = 0.577179270832857600
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+    PasswordChar = '*'
     TabOrder = 0
   end
-  object btnXacNhanGiaHan: TButton
-    Left = 124
-    Top = 192
-    Width = 117
-    Height = 49
-    Caption = 'X'#225'c nh'#7853'n'
+  object edtMatKhauMoi: TEdit
+    Left = 222
+    Top = 106
+    Width = 150
+    Height = 36
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -20
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    PasswordChar = '*'
+    TabOrder = 1
+  end
+  object edtXacNhanMatKhauMoi: TEdit
+    Left = 222
+    Top = 148
+    Width = 150
+    Height = 36
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -20
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    PasswordChar = '*'
+    TabOrder = 2
+  end
+  object btnLuu: TButton
+    Left = 100
+    Top = 200
+    Width = 75
+    Height = 36
+    Caption = 'L'#432'u'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
@@ -330,14 +369,15 @@ object frmNhapGiaHan: TfrmNhapGiaHan
     Font.Style = []
     ModalResult = 1
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 3
+    OnClick = btnLuuClick
   end
-  object btnHuyGiaHan: TButton
-    Left = 312
-    Top = 192
-    Width = 116
-    Height = 49
-    Caption = 'Hu'#7927
+  object btnHuy: TButton
+    Left = 200
+    Top = 200
+    Width = 75
+    Height = 36
+    Caption = 'H'#7911'y'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
@@ -345,6 +385,7 @@ object frmNhapGiaHan: TfrmNhapGiaHan
     Font.Style = []
     ModalResult = 2
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 4
+    OnClick = btnHuyClick
   end
 end

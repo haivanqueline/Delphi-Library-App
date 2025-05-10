@@ -7,7 +7,7 @@ object DM_DuLieu: TDM_DuLieu
       'Server=HARIQUEF'
       'Database=KhoaLuan'
       'User_Name=sa'
-      'Password=Zingspeedline1@'
+      'Password=qwe123qwe'
       'DriverID=MSSQL')
     Connected = True
     Left = 504
