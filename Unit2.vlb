@@ -1,5 +1,5 @@
 ﻿[]
-Coordinates=838,1420,91,36
+Coordinates=571,463,127,58
 Visible=True
 LayerNames=NewLayer0
 
@@ -80,9 +80,6 @@ Coordinates=571,232,99,58
 
 [pnlTraCuu_TimKiem]
 Coordinates=838,540,132,58
-
-[edtTraCuu_TuKhoa]
-Coordinates=571,463,127,58
 
 [mnuDangMuon_TraTaiLieu]
 Coordinates=838,1145,170,36

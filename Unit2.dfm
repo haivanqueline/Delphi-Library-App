@@ -1257,7 +1257,7 @@ object frmMain: TfrmMain
     Top = 57
     Width = 1080
     Height = 583
-    ActivePage = TabSheet4
+    ActivePage = TabSheet1
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clNavy
@@ -1276,7 +1276,7 @@ object frmMain: TfrmMain
         Left = 0
         Top = 0
         Width = 1072
-        Height = 33
+        Height = 51
         Align = alTop
         BevelOuter = bvNone
         Color = clInfoBk
@@ -1287,7 +1287,7 @@ object frmMain: TfrmMain
           Left = 0
           Top = 0
           Width = 132
-          Height = 33
+          Height = 51
           Align = alLeft
           Caption = 'T'#236'm ki'#7871'm t'#224'i li'#7879'u:'
           Font.Charset = DEFAULT_CHARSET
@@ -1299,30 +1299,11 @@ object frmMain: TfrmMain
           Layout = tlCenter
           ExplicitHeight = 21
         end
-        object edtTraCuu_TuKhoa: TEdit
-          Left = 132
-          Top = 0
-          Width = 771
-          Height = 33
-          Align = alLeft
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          Color = clWhite
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 0
-          TextHint = 'Nh'#7853'p t'#7915' kh'#243'a (t'#234'n t'#224'i li'#7879'u, t'#225'c gi'#7843', m'#227' t'#224'i li'#7879'u,...)'
-          ExplicitHeight = 29
-        end
         object btnTraCuu_TimKiem: TBitBtn
-          Left = 903
+          Left = 732
           Top = 0
           Width = 100
-          Height = 33
+          Height = 51
           Align = alLeft
           Caption = 'T'#236'm Ki'#7871'm'
           Font.Charset = DEFAULT_CHARSET
@@ -1333,17 +1314,84 @@ object frmMain: TfrmMain
           Kind = bkRetry
           NumGlyphs = 2
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 0
           OnClick = btnTraCuu_TimKiemClick
           OnMouseEnter = btnTraCuu_TimKiemMouseEnter
           OnMouseLeave = btnTraCuu_TimKiemMouseLeave
         end
+        object Panel1: TPanel
+          Left = 132
+          Top = 0
+          Width = 600
+          Height = 51
+          Align = alLeft
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Panel2: TPanel
+            Left = 0
+            Top = 0
+            Width = 600
+            Height = 25
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 0
+            object edtTraCuu_TenTaiLieu: TEdit
+              Left = 0
+              Top = 0
+              Width = 295
+              Height = 25
+              Align = alLeft
+              TabOrder = 0
+              TextHint = 'T'#236'm ki'#7871'm theo t'#234'n t'#224'i li'#7879'u'
+              ExplicitHeight = 28
+            end
+            object edtTraCuu_TenTacGia: TEdit
+              Left = 305
+              Top = 0
+              Width = 295
+              Height = 25
+              Align = alRight
+              TabOrder = 1
+              TextHint = 'T'#236'm ki'#7871'm theo t'#234'n t'#225'c gi'#7843
+              ExplicitHeight = 28
+            end
+          end
+          object Panel3: TPanel
+            Left = 0
+            Top = 26
+            Width = 600
+            Height = 25
+            Align = alBottom
+            BevelOuter = bvNone
+            TabOrder = 1
+            object edtTraCuu_NhaXB: TEdit
+              Left = 0
+              Top = 0
+              Width = 295
+              Height = 25
+              Align = alLeft
+              TabOrder = 0
+              TextHint = 'T'#236'm ki'#7871'm theo nh'#224' xu'#7845't b'#7843'n'
+              ExplicitHeight = 28
+            end
+            object edtTraCuu_MoTa: TEdit
+              Left = 305
+              Top = 0
+              Width = 295
+              Height = 25
+              Align = alRight
+              TabOrder = 1
+              TextHint = 'T'#236'm ki'#7871'm theo m'#244' t'#7843
+              ExplicitHeight = 28
+            end
+          end
+        end
       end
       object lstvTraCuu_DanhSachTaiLieu: TListView
         Left = 0
-        Top = 33
+        Top = 51
         Width = 1072
-        Height = 512
+        Height = 494
         Align = alClient
         BevelKind = bkSoft
         Columns = <
@@ -1473,6 +1521,8 @@ object frmMain: TfrmMain
         TabOrder = 0
         ViewStyle = vsReport
         OnCustomDrawItem = lstvTra_LichSuMuonTraCustomDrawItem
+        ExplicitTop = 24
+        ExplicitHeight = 521
       end
       object pnlLichSu_BoLoc: TPanel
         Left = 0
@@ -1564,7 +1614,6 @@ object frmMain: TfrmMain
         Color = clInfoBk
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 1066
         object lblMuon_NhanTimKiem: TLabel
           Left = 0
           Top = 0

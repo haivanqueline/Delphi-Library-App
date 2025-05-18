@@ -4,10 +4,11 @@ object DM_DuLieu: TDM_DuLieu
   PixelsPerInch = 144
   object FDConnection: TFDConnection
     Params.Strings = (
-      'Server=HARIQUEF'
       'Database=KhoaLuan'
-      'User_Name=sa'
-      'Password=qwe123qwe'
+      'Server=localhost'
+      'OSAuthent=Yes'
+      'Encrypt=No'
+      'TrustServerCertificate=Yes'
       'DriverID=MSSQL')
     Connected = True
     Left = 504
